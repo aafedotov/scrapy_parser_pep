@@ -20,7 +20,7 @@ class PepSpider(scrapy.Spider):
         for i, table in enumerate(tables):
             if i == 0:
                 continue
-            if i == 10:
+            if i == 30:
                 break
             row = table.css('td')
             pep_link = urljoin(
