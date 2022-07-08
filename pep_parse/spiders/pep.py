@@ -1,7 +1,8 @@
+from urllib.parse import urljoin
+
 import scrapy
 
 from pep_parse.items import PepParseItem
-from urllib.parse import urljoin
 
 
 class PepSpider(scrapy.Spider):
