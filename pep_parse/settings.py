@@ -10,7 +10,7 @@ FEEDS = {
     'results/pep_%(time)s.csv': {
         'format': 'csv',
 
-        'fields': ['Номер', 'Название', 'Статус'],
+        'fields': ['number', 'name', 'status'],
 
         'overwrite': True
     },

@@ -4,6 +4,8 @@ import datetime as dt
 from collections import defaultdict
 from pathlib import Path
 
+BASE_DIR = Path(__file__).parent.parent
+
 
 class PepParsePipeline:
 
@@ -17,14 +19,14 @@ class PepParsePipeline:
     def open_spider(self, spider):
         """Создаем папку для результатов, если ее нет."""
 
-        results_dir = Path(__file__).parent.parent / 'results'
+        results_dir = BASE_DIR / 'results'
         results_dir.mkdir(exist_ok=True)
 
     def process_item(self, item, spider):
         """Считаем статусы."""
 
         self.pep_count += 1
-        self.status_count[item['Статус']] += 1
+        self.status_count[item['status']] += 1
         return item
 
     def close_spider(self, spider):
@@ -37,7 +39,7 @@ class PepParsePipeline:
         now = dt.datetime.now()
         now_formatted = now.strftime('%Y-%m-%d_%H-%M-%S')
         file_name = f'status_summary_{now_formatted}.csv'
-        file_path = Path(__file__).parent.parent / 'results' / file_name
+        file_path = BASE_DIR / 'results' / file_name
 
         with open(file_path, 'w', encoding='utf-8') as f:
             writer = csv.writer(f, dialect='unix')

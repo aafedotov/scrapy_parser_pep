@@ -9,7 +9,7 @@ class PepSpider(scrapy.Spider):
 
     name = 'pep'
     allowed_domains = ['peps.python.org']
-    start_urls = ['http://peps.python.org/']
+    start_urls = ['https://peps.python.org/']
 
     def parse(self, response):
         """Парсер ссылок на страницы Pep."""
@@ -20,8 +20,6 @@ class PepSpider(scrapy.Spider):
         for i, table in enumerate(tables):
             if i == 0:
                 continue
-            if i == 30:
-                break
             row = table.css('td')
             pep_link = urljoin(
                 PepSpider.start_urls[0], row.css('a::attr(href)').get()
@@ -33,9 +31,10 @@ class PepSpider(scrapy.Spider):
 
         h1 = response.css('h1.page-title::text').get()
 
-        item = PepParseItem()
-        item['Номер'] = int(h1[:h1.find(' –')].replace('PEP ', ''))
-        item['Название'] = h1[h1.find(' –') + 3:]
-        item['Статус'] = response.css('dt:contains("Status") + dd::text').get()
+        data = {
+            'number': int(h1[:h1.find(' –')].replace('PEP ', '')),
+            'name': h1[h1.find(' –') + 3:],
+            'status': response.css('dt:contains("Status") + dd::text').get()
+        }
 
-        yield item
+        yield PepParseItem(data)
