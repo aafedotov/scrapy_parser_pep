@@ -25,8 +25,9 @@ class PepParsePipeline:
     def process_item(self, item, spider):
         """Считаем статусы."""
 
-        self.pep_count += 1
-        self.status_count[item['status']] += 1
+        if item['status']:
+            self.pep_count += 1
+            self.status_count[item['status']] += 1
         return item
 
     def close_spider(self, spider):
